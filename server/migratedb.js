@@ -6,7 +6,7 @@ var initial = function () {
 var clearDb = function () {
 	console.log('Clearing db');
 	ItemsCollection.remove({});
-	return false;
+	return true;
 };
 
 var fillWithDummyData = function () {
@@ -45,22 +45,26 @@ var readFileByLine = function (fileName, callback) {
 	fs.close(fd);
 };
 
+var regexExtractor = function (re) {
+	return function (line) {
+		line = line.trim();
+		var m = re.exec(line);
+		if (m !== null) {
+			ItemsCollection.insert({title: m[1], description: m[2]});
+		} else if (line.length) {
+			console.log(line);
+			console.warn('Doesn\'t match');
+		}
+	};
+};
+
+
 var importData1 = function () {
 	var file = process.env.PWD + '/.assets/1.data';
-	var i = 0;
-	console.log('start');
-	readFileByLine(file, function (line) {
-		line = line.trim();
-		var re = /title: '([^']+)'\s*,\s*description:\s*'([^']+)'/;
-		if (re.test(line)) {
-		} else {
-			console.log(line);
-			console.log('don\'t match');
-			return false;
-		}
-		i++;
-	});
-	console.log('end: ' + i);
+	console.log('Importing...');
+	readFileByLine(file, regexExtractor(/title: '([^']+)'\s*,\s*description:\s*'([^']*)'/i));
+	console.log('Imported...');
+	return true;
 };
 
 // =========================================================

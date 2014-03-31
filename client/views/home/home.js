@@ -8,9 +8,11 @@ Template.searchBox.rendered = function () {
 var searchTimeout;
 var search = function (string, timeout) {
 	Meteor.clearTimeout(searchTimeout);
-	searchTimeout = Meteor.setTimeout(function () {
-		Session.set('search.string', string);
-	}, timeout);
+	if (string !== Session.get('search.string')) {
+		searchTimeout = Meteor.setTimeout(function () {
+			Session.set('search.string', string);
+		}, timeout);
+	}
 };
 
 var clear = function () {
@@ -28,15 +30,6 @@ Template.searchBox.events({
 		}
 	},
 	'click .clear-search': clear
-});
-
-Template.searchResults.helpers({
-	results: function () {
-		var results = ItemsCollection.find({});
-		console.log('getting results: ' + results.count());
-		setBodyClass(results);
-		return results;
-	}
 });
 
 var setBodyClass = function (results) {
@@ -58,11 +51,23 @@ var setBodyClass = function (results) {
 	}
 };
 
+Template.searchResults.helpers({
+	results: function () {
+		var results = ItemsCollection.find({});
+		console.log('getting results: ' + results.count());
+		setBodyClass(results);
+		return results;
+	}
+});
+
+
 Meteor.startup(function () {
 	Deps.autorun(function () {
 		var searchString = Session.get('search.string');
-		Meteor.subscribe('items', searchString);		
-		$('body').addClass('loading');
+		Meteor.subscribe('items', searchString, function () {
+			$('body').removeClass('page-loading');
+		});
+		$('body').addClass('page-loading');
 	});
 });
 
@@ -70,13 +75,10 @@ var emphasizeField = function (field) {
 	return function () {
 		var str = Session.get('search.string');
 		str = str.split(' ');
-		// str-= _.map(str, function (s) {
-			// return s + '|';
-		// });
-		str = str.join('|')
+		str = str.join('|');
 		str = '('+str+')';
 		return this[field].replace(new RegExp(str, 'gi'), '**$1**');
-	}
+	};
 };
 
 Template.itemSummary.helpers({

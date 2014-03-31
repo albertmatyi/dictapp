@@ -3,3 +3,27 @@ body {
 	background-size: cover;
 	background-attachment: fixed;
 }
+.loading {
+	display: none;
+	font-size: @font-size-large * 2;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 100;
+	position: absolute;
+	left: -@grid-gutter-width/2;
+	right: -@grid-gutter-width/2;
+	top: 0;
+	bottom: 0;
+	.fa {
+		color: #fff;
+		position: fixed;
+		top: 50%;
+		margin-left: -.5em;
+		margin-top: -.5em;
+	}
+}
+.page-loading {
+	.loading {
+		display: block;
+	}
+}

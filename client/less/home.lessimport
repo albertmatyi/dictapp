@@ -45,7 +45,7 @@
 	.transition(@transition);
 	position: relative;
 	opacity: 0;
-	padding-top: 20%;
+	top: @font-size-large * 7;
 }
 
 .page-default {
