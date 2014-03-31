@@ -1,3 +1,49 @@
 <template name="home">
-	<h1>hello world</h1>
+	<img src="/icon.svg" alt="" class="logo">
+	<div class="app-title">
+		<h1>
+			<span class="hidden-xs">You've been </span>laweyered
+		</h1>
+		<div class="row search-box">
+			{{>searchBox}}
+		</div>
+	</div>
+	<div class="row search-results">
+		{{>searchResults}}
+	</div>
+</template>
+
+<template name="searchBox">
+	<div class="input-group col-md-4 col-md-offset-4 input-group-lg">
+		<span class="input-group-addon">
+			<span class="fa fa-search fa-lg nekoe"></span>
+		</span>
+		<input type="text" placeholder="Search by keywords"	class="form-control" id="search-string" value="{{searchString}}">
+		<span class="input-group-addon btn clear-search">
+			<span class="fa fa-times fa-lg"></span>
+		</span>
+	</div>
+</template>
+
+<template name="searchResults">
+	<div class="row title">
+		<div class="col-12-xs">
+			Results
+		</div>
+	</div>
+	<div class="row result header">
+		<div class="col-sm-4 title">Word</div>
+		<div class="col-sm-8 description">Description</div>
+	</div>
+	{{#each results}}
+	{{> itemSummary}}
+	{{/each}}
+</template>
+
+<template name="itemSummary">
+	<div class="row result">
+		<div class="col-sm-4 col-xs-6 title">{{#markdown}}{{title}}{{/markdown}}</div>
+		<div class="col-sm-8 col-xs-12 description">{{#markdown}}{{{description}}}{{/markdown}}
+		</div>
+	</div>
 </template>

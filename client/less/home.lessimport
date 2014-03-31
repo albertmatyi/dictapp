@@ -1,0 +1,95 @@
+@transition: all 1s ease;
+.logo {
+	.transition(@transition);
+	position: fixed;
+	width: 40%;
+	margin-left: -20%;
+	left: 50%;
+	top: 10%;
+	opacity: .8;
+}
+
+.app-title {
+	.transition(@transition);
+	position: fixed;
+	z-index: 10;
+	left: 0;
+	right: 0;
+	top: 50%;
+	margin-top: -@font-size-large * 4;
+	background: rgba(150, 200, 255, .7);
+	
+	h1 {
+		font-size: @font-size-large * 2;
+		font-family: Pacifico;
+		font-weight: 100;
+		text-align: center;
+		// text-transform: uppercase;
+		color: #efefef;
+		text-shadow: 1px 1px 3px #fff, -1px -1px 3px rgba(0,0,0,1);
+		white-space: nowrap;
+		.hidden-xs {
+			@media (min-width: @screen-sm-min) {
+				display: inline !important;
+			}
+		}
+	}
+	.search-box {
+		.transition(@transition);
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+}
+
+.search-results {
+	.transition(@transition);
+	position: relative;
+	opacity: 0;
+	padding-top: 20%;
+}
+
+.page-default {
+	.search-box {
+		.clear-search {
+			display: none;
+		}
+	}
+}
+
+.page-search {
+	.app-title, .logo {
+		top: 0;
+	}
+}
+.page-results {
+	.search-results {
+		opacity: 1;
+		.row {
+			background-color: rgba(255,255,255, .8);
+			&.header {
+				text-align: center;
+				font-size: 1.3em;
+				font-weight: bold;
+			}
+			&.result {
+				&:nth-child(odd) {
+					background-color: rgba(255,255,255, .7);
+				}
+				.title {
+					font-size: 1.1em;
+				}
+			}
+			&.title {
+				font-size: @font-size-large * 2;
+				background: @brand-success;
+				font-family: Pacifico;
+				color: #fff;
+				text-align: center;
+			}
+		}
+	}
+}
+
+.page-define {
+
+}

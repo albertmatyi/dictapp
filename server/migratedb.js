@@ -1,14 +1,75 @@
-var initial = function (version) {
+var initial = function () {
 	// return true to update version value, otherwise version number is not updated
 	return true;
 };
 
+var clearDb = function () {
+	console.log('Clearing db');
+	ItemsCollection.remove({});
+	return false;
+};
+
+var fillWithDummyData = function () {
+	console.log('Filling with fixieData');
+	ItemsCollection.remove({});
+	for (var i = 100; i >= 0; i--) {
+		ItemsCollection.insert({
+			title: fixie.fetchPhrase(),
+			description: fixie.fetchParagraph()
+		});
+	}
+	return true;
+};
+
+var fs = Npm.require('fs');
+var readFileByLine = function (fileName, callback) {
+	var fd = fs.openSync(fileName, 'r');
+	var step = 1;
+	var size = fs.statSync(fileName).size;
+	var line = '';
+	var pos = 0;
+	var buffer = Buffer(step);
+	while (size > pos) {
+		fs.readSync(fd, buffer, 0, step, pos);
+		var c = buffer.toString();
+		if (c === '\n') {
+			if (callback(line) === false) {
+				break;
+			}
+			line = '';
+		} else {
+			line += c;
+		}
+		pos += step;
+	}
+	fs.close(fd);
+};
+
+var importData1 = function () {
+	var file = process.env.PWD + '/.assets/1.data';
+	var i = 0;
+	console.log('start');
+	readFileByLine(file, function (line) {
+		line = line.trim();
+		var re = /title: '([^']+)'\s*,\s*description:\s*'([^']+)'/;
+		if (re.test(line)) {
+		} else {
+			console.log(line);
+			console.log('don\'t match');
+			return false;
+		}
+		i++;
+	});
+	console.log('end: ' + i);
+};
 
 // =========================================================
 
-
 var migrations = [
 initial,
+fillWithDummyData,
+clearDb,
+importData1
 ];
 
 // =========================================================
@@ -26,12 +87,12 @@ var migrateDb = function () {
 		console.log('Migrating from version ' + (i-1) + ' to ' + i);
 		var ret = migrations[i](i);
 		if(ret) {
-			var ver = i;
+			var tver = i;
 			if (ret === 'downgrade') {
-				ver -= 2;
-				console.log('Downgrading to ' + ver);
+				tver -= 2;
+				console.log('Downgrading to ' + tver);
 			}
-			PropertiesCollection.update({key: 'dbversion'}, {$set: {value: ver}}, {multi: true});
+			PropertiesCollection.update({key: 'dbversion'}, {$set: {value: tver}}, {multi: true});
 		}
 	}
 	console.log('Migraton done');

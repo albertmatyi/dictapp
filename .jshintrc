@@ -55,11 +55,7 @@
     // app
         "Fixtures",
         "PropertiesCollection",
-        "MediasCollection",
-        "MediaGroupsCollection",
-        "App",
-        "RoomsCollection",
-        "ChromeApp",
-        "WorkspaceStream"
+        "ItemsCollection",
+        "App"
     ]
 }
