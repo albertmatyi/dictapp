@@ -1,0 +1,34 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "bootstrap3-less": {},
+      "iron-router": {},
+      "GAnalytics": {},
+      "fast-render": {},
+      "accounts-ui-bootstrap-3": {}
+    },
+    "packages": {
+      "bootstrap3-less": {
+        "git": "https://github.com/eprochasson/bootstrap3-less",
+        "tag": "v0.1.9",
+        "commit": "5c812c4d7ce72917a065f0424c3cf54e5ff2d16a"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+      },
+      "fast-render": {
+        "git": "https://github.com/arunoda/meteor-fast-render.git",
+        "tag": "v0.1.19",
+        "commit": "9e9a34e51885474c0dd9ed7a64dbff7ee9d4315c"
+      },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.2.6",
+        "commit": "f3ee0ef6bc506314e19585550b4f9f5620c4ada6"
+      }
+    }
+  }
+}

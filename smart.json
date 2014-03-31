@@ -1,0 +1,9 @@
+{
+  "packages": {
+    "iron-router": {},
+    "bootstrap3-less": {},
+    "font-awesome-4-less": {},
+    "accounts-ui-bootstrap-3": {},
+    "marked": {}
+  }
+}
