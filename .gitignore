@@ -1,3 +1,4 @@
 .openshift/
 .demeteorized/
 app.sublime-workspace
+.assets/
