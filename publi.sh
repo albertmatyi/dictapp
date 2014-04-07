@@ -15,7 +15,7 @@ git push origin master
 git push origin master:$DST
 
 # openshift app name
-$APP_NAME=dictapp
+$APP_NAME="dictapp"
 
 # demeteorize
 rm .demeteorized -r
