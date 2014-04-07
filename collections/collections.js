@@ -21,7 +21,8 @@ var buildCondition = function (fields, str) {
 	.replace(/:fields/gi, fields)
 	.replace(/:condition/gi, '' + condition);
 
-	return {$where: filter};
+	// return {$where: filter};
+	return {title: {$regex: '.*' + words[0] + '.*'}};
 };
 
 App.component('items').expose({

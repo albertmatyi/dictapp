@@ -1,4 +1,4 @@
 @border-radius-base: 0px;
 @font-size-large: ceil(@font-size-base * 1.5);
 
-@font-size-base: 22px;
+@font-size-base: 16px;

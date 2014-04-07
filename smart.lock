@@ -2,32 +2,52 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "bootstrap3-less": {},
-      "iron-router": {},
-      "GAnalytics": {},
-      "fast-render": {},
-      "accounts-ui-bootstrap-3": {}
+      "bootstrap3-less": {
+        "git": "https://github.com/eprochasson/bootstrap3-less",
+        "tag": "v0.1.8"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.4"
+      },
+      "font-awesome-4-less": {
+        "git": "https://github.com/svub/fontawesome4-less.git",
+        "tag": "v4.0.3.5"
+      },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.2.6"
+      },
+      "marked": {
+        "git": "https://github.com/chuangbo/meteor-marked.git",
+        "tag": "v0.3.1"
+      }
     },
     "packages": {
       "bootstrap3-less": {
         "git": "https://github.com/eprochasson/bootstrap3-less",
-        "tag": "v0.1.9",
-        "commit": "5c812c4d7ce72917a065f0424c3cf54e5ff2d16a"
+        "tag": "v0.1.8",
+        "commit": "48b6db4435d9f01a1fcfe694a180b38e8e38835b"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.4",
         "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
       },
-      "fast-render": {
-        "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.1.19",
-        "commit": "9e9a34e51885474c0dd9ed7a64dbff7ee9d4315c"
+      "font-awesome-4-less": {
+        "git": "https://github.com/svub/fontawesome4-less.git",
+        "tag": "v4.0.3.5",
+        "commit": "62b328080771eac322ee4d639189b75ced51ebe0"
       },
       "accounts-ui-bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
         "tag": "v0.2.6",
         "commit": "f3ee0ef6bc506314e19585550b4f9f5620c4ada6"
+      },
+      "marked": {
+        "git": "https://github.com/chuangbo/meteor-marked.git",
+        "tag": "v0.3.1",
+        "commit": "3d9a9c94793b20e1ee7c807931cb536010d6f820"
       }
     }
   }

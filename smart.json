@@ -1,9 +1,24 @@
 {
   "packages": {
-    "iron-router": {},
-    "bootstrap3-less": {},
-    "font-awesome-4-less": {},
-    "accounts-ui-bootstrap-3": {},
-    "marked": {}
+    "bootstrap3-less": {
+        "git": "https://github.com/eprochasson/bootstrap3-less",
+        "tag": "v0.1.8"
+	},
+	"iron-router": {
+		"git": "https://github.com/EventedMind/iron-router.git",
+		"tag": "v0.6.4"
+	},
+	"font-awesome-4-less": {
+		"git": "https://github.com/svub/fontawesome4-less.git",
+		"tag": "v4.0.3.5"
+  	},
+    "accounts-ui-bootstrap-3": {
+    	"git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+    	"tag": "v0.2.6"
+	},
+    "marked": {
+        "git": "https://github.com/chuangbo/meteor-marked.git",
+        "tag": "v0.3.1"
+    }
   }
 }
