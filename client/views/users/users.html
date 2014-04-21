@@ -1,0 +1,50 @@
+<template name="users">
+	<div class="modal fade" id="users-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Users</h4>
+				</div>
+				<div class="modal-body">
+					{{>usersTable}}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</template>
+<template name="usersTable">
+	<table class="table">
+		<tr>
+			<th>Username</th>
+			<th data-toggle="tooltip" data-placement="bottom" title="No rights">Normal</th>
+			<th data-toggle="tooltip" data-placement="bottom" title="Can define new words, edit/remove existing items">
+				Editor
+			</th>
+			<th data-toggle="tooltip" data-placement="bottom" title="All the rights of an editor and can manage users">
+				Admin
+			</th>
+			<th>Remove</th>
+		</tr>
+		{{#each users}}
+		{{> user}}
+		{{/each}}
+	</table>
+
+</template>
+<template name="user">
+	<tr>
+		<td>{{username}}</td>
+		<td><input type="radio" name="role-{{username}}" {{checked "normal"}} value="normal" class="role"></td>
+		<td><input type="radio" name="role-{{username}}" {{checked "editor"}} value="editor" class="role"></td>
+		<td><input type="radio" name="role-{{username}}" {{checked "admin"}} value="admin" class="role"></td>
+		<td>
+			<button class="remove btn btn-danger">
+				<span class="fa fa-trash-o"></span>
+			</button>
+		</td>
+	</tr>
+</template>

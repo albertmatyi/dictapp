@@ -1,28 +1,13 @@
 PropertiesCollection = new Meteor.Collection('properties');
 ItemsCollection = new Meteor.Collection('items');
 
-var cleanWord = function (word) {
-	return word.replace(/[^\w_-]/gi, '');
-};
-
-var buildCondition = function (fields, str) {
-	var words = _.map(str.split(' '), cleanWord);
-	fields = '\'\'' + _.map(fields, function (f) { return ', this.'+f; }).join(' ');
-
-	var condition = 'true';
-	_.each(words, function (word) {
-		if (word.length) {
-			condition += ' && str.match(/'+word+'/gi)';
-		}
+var buildCondition = function (str) {
+	str = App.string.removeNonWordChars(str);
+	var words = _.map(str.split(/\s+/), App.string.replaceSpecialChars);
+	var rex = _.map(words, function (word) {
+		return {searchable: {$regex: '.*' + word + '.*'}};
 	});
-
-	var filter = 'function () { var str = [:fields].join(\' \'); return :condition; }';
-	filter = filter
-	.replace(/:fields/gi, fields)
-	.replace(/:condition/gi, '' + condition);
-
-	// return {$where: filter};
-	return {title: {$regex: '.*' + words[0] + '.*'}};
+	return {$and: rex};
 };
 
 App.component('items').expose({
@@ -31,13 +16,10 @@ App.component('items').expose({
 			return [];
 		}
 		limit = limit || 30;
-		var condition = searchStr ? buildCondition(['title', 'description'], searchStr):{};
+		var condition = searchStr ? buildCondition(searchStr):{};
 		var results = ItemsCollection.find(
 			condition,
 			{limit: limit, sort: {title: 1}});
-			//, sort: {updated: -1}
-		console.log('Found ' + results.count() + ' results');
-		console.log('searching with: ' + searchStr);
 		return results;
 	}
 });
@@ -46,5 +28,23 @@ App.component('items').expose({
 if (Meteor.isServer) {
 	Meteor.publish('items', function (searchString, limit) {
 		return App.items.find(searchString, limit);
+	});
+	Meteor.publish('users', function () {
+		if (App.auth.isAdmin()) {
+			return Meteor.users.find();
+		}
+		return [];
+	});
+	var adminAndOtherUser = function (userId, doc) {
+		return !App.auth.isAdmin() || userId === doc._id;
+	};
+	Meteor.users.deny({
+		update: adminAndOtherUser,
+		remove: adminAndOtherUser
+	});
+	ItemsCollection.allow({
+		insert: App.auth.isAdmin,
+		update: App.auth.isAdmin,
+		remove: App.auth.isAdmin
 	});
 }

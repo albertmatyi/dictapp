@@ -17,16 +17,13 @@
 	right: 0;
 	top: 50%;
 	margin-top: -@font-size-large * 4;
-	background: rgba(150, 200, 255, .7);
+	background: fade(@brand-primary, 70%);
 	
 	h1 {
 		font-size: @font-size-large * 2;
-		font-family: Pacifico;
 		font-weight: 100;
 		text-align: center;
-		// text-transform: uppercase;
 		color: #efefef;
-		text-shadow: 1px 1px 3px #fff, -1px -1px 3px rgba(0,0,0,1);
 		white-space: nowrap;
 		.hidden-xs {
 			@media (min-width: @screen-sm-min) {
@@ -38,6 +35,26 @@
 		.transition(@transition);
 		padding-top: 2em;
 		padding-bottom: 2em;
+		.input-group-addon {
+			background-color: transparent;
+			color: @gray-lighter;
+			border: none;
+			&:hover {
+				color: white;
+			}
+		}
+	}
+	.main-menu {
+		position: absolute;
+		list-style: none;
+		right: @grid-gutter-width / 2;
+		top: @grid-gutter-width / 2;
+		li {
+			float: left;
+		}
+		.dropdown-toggle {
+			color: #fff;
+		}
 	}
 }
 
@@ -61,19 +78,33 @@
 		top: 0;
 	}
 }
-.page-results {
+.page-results, .page-define {
 	.search-results {
 		opacity: 1;
 		.row {
-			background-color: rgba(255,255,255, .8);
+			background-color: fade(white, 80%);
 			&.header {
+				font-weight: 100;
 				text-align: center;
 				font-size: 1.3em;
-				font-weight: bold;
+			}
+			&.editing {
+				.description {
+					min-height: 92px;
+				}
+				.controls {
+					padding: 0;
+					.btn {
+						width: 100%;
+					}
+				}
 			}
 			&.result {
 				&:nth-child(odd) {
-					background-color: rgba(255,255,255, .7);
+					background-color: fade(@gray-lighter, 80%);
+				}
+				.title, .description {
+					cursor: pointer;
 				}
 				.title {
 					font-size: 1.1em;
@@ -82,14 +113,10 @@
 			&.title {
 				font-size: @font-size-large * 2;
 				background: @brand-success;
-				font-family: Pacifico;
+				font-weight: 100;
 				color: #fff;
 				text-align: center;
 			}
 		}
 	}
-}
-
-.page-define {
-
 }

@@ -1,4 +1,8 @@
 @border-radius-base: 0px;
-@font-size-large: ceil(@font-size-base * 1.5);
+@border-radius-large: 0px;
+@border-radius-small: 0px;
 
+@font-size-large: ceil(@font-size-base * 1.5);
+@font-family-sans-serif: 'Roboto Slab', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+@font-family-sans-serif: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 @font-size-base: 16px;

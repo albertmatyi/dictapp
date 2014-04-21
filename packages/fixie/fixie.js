@@ -210,7 +210,6 @@ function fixie_fetchDefinitionList() {
     for (var i = 0, l = constrain(3,5); i < l; i++) {
         html += fetch_suroundWithTag(1, 1, fixie_fetchPhrase, 'dt') + fetch_suroundWithTag(1, 1, fixie_fetchPhrase, 'dd');
     }
-    console.log(html)
     return html;
 }
 

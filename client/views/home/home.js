@@ -54,34 +54,113 @@ var setBodyClass = function (results) {
 Template.searchResults.helpers({
 	results: function () {
 		var results = ItemsCollection.find({});
-		console.log('getting results: ' + results.count());
 		setBodyClass(results);
 		return results;
 	}
 });
 
+var loadResults = function (limit) {
+	var searchString = Session.get('search.string');
+	limit = limit || 30;
+	Meteor.subscribe('items', searchString, limit, function () {
+		$('body').removeClass('page-loading');
+	});
+	$('body').addClass('page-loading');
+};
+
 
 Meteor.startup(function () {
 	Deps.autorun(function () {
-		var searchString = Session.get('search.string');
-		Meteor.subscribe('items', searchString, function () {
-			$('body').removeClass('page-loading');
-		});
-		$('body').addClass('page-loading');
+		loadResults(30);
+	});
+	$(window).scroll(function() {
+		if($(window).scrollTop() === $(document).height() - $(window).height()) {
+			loadResults(ItemsCollection.find().count() + 30);
+		}
 	});
 });
 
 var emphasizeField = function (field) {
 	return function () {
-		var str = Session.get('search.string');
-		str = str.split(' ');
+		var str = Session.get('search.string') || '';
+		str = App.string.removeNonWordChars(str);
+		var baseStr = App.string.replaceSpecialChars(str);
+		str = str.split(/\s+/);
+		str = str.concat(_.filter(baseStr.split(/\s+/), function (word) {
+			return _.indexOf(str, word) === -1;
+		}));
 		str = str.join('|');
 		str = '('+str+')';
-		return this[field].replace(new RegExp(str, 'gi'), '**$1**');
+		return this[field].replace(new RegExp(str, 'gi'), '**$1**').replace(/\*\*\*\*/gi, '');
 	};
 };
 
 Template.itemSummary.helpers({
 	title: emphasizeField('title'),
-	description: emphasizeField('description')
+	description: emphasizeField('description'),
+	editItem: function () {
+		return Session.get('item.editId') === this._id;
+	}
+});
+
+var removeEditor = function () {
+	Session.set('item.editId', undefined);
+};
+
+Template.itemSummary.events({
+	'click': function (e) {
+		e.stopPropagation();
+		if (App.auth.isAdmin()) {
+			Session.set('item.editId', this._id);
+			$('body').off('click', removeEditor).on('click', removeEditor);
+		}
+	}
+});
+Template.itemSummary.events({
+	'click .remove.btn': function () {
+		if (!confirm('Are you sure?')) {
+			return;
+		}
+		ItemsCollection.remove(this._id);
+	},
+	'click .save.btn': function (e) {
+		var $row = $(e.currentTarget).parents('.row');
+		var title = $row.find('.title').val();
+		var description = $row.find('.description').val();
+		Session.set('item.editId');
+		ItemsCollection.update(this._id, {$set: {title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title)}});
+		removeEditor();
+	}
+});
+Template.itemNew.helpers({
+	mock: function () {
+		return {title: Session.get('search.string'), description:''};
+	},
+	hideDefinition: function () {
+		return ItemsCollection.find().count() === 0 ? '':'hidden';
+	}
+});
+
+var clearRow = function ($row) {
+	$row.find('.title').val('');
+	$row.find('.description').val('');
+};
+Template.itemNew.events({
+	'click .remove.btn': function (e) {
+		var $row = $(e.currentTarget).parents('.row');
+		clearRow($row);
+	},
+	'click .save.btn': function (e) {
+		var $row = $(e.currentTarget).parents('.row');
+		var title = $row.find('.title').val();
+		var description = $row.find('.description').val();
+		ItemsCollection.insert({title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title)});
+		clearRow($row);
+	}
+});
+
+Template.mainMenu.events({
+	'click .users.btn': function () {
+		App.users.show();
+	}
 });

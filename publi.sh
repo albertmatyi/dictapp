@@ -12,7 +12,7 @@ git add . --all
 git commit -a
 git push origin master
 
-git push origin master:$DST
+# git push origin master:$DST
 
 # openshift app name
 APP_NAME="dictapp"
