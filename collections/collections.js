@@ -30,21 +30,26 @@ if (Meteor.isServer) {
 		return App.items.find(searchString, limit);
 	});
 	Meteor.publish('users', function () {
-		if (App.auth.isAdmin()) {
+		if (this.userId && App.auth.isAdmin(this.userId)) {
 			return Meteor.users.find();
 		}
 		return [];
 	});
 	var adminAndOtherUser = function (userId, doc) {
-		return !App.auth.isAdmin() || userId === doc._id;
+		return App.auth.isAdmin(userId) && userId !== doc._id;
 	};
+	Meteor.users.allow({
+		remove: adminAndOtherUser,
+		update: adminAndOtherUser
+	});
 	Meteor.users.deny({
-		update: adminAndOtherUser,
-		remove: adminAndOtherUser
+		update: function (userId, doc) {
+			return !adminAndOtherUser(userId, doc);
+		}
 	});
 	ItemsCollection.allow({
-		insert: App.auth.isAdmin,
-		update: App.auth.isAdmin,
-		remove: App.auth.isAdmin
+		insert: App.auth.canEdit,
+		update: App.auth.canEdit,
+		remove: App.auth.canEdit
 	});
 }

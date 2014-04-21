@@ -5,3 +5,7 @@ Accounts.ui.config({
 Handlebars.registerHelper('isAdmin', function () {
 	return App.auth.isAdmin();
 });
+
+Handlebars.registerHelper('canEdit', function () {
+	return App.auth.canEdit();
+});

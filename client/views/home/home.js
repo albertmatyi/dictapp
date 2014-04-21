@@ -78,6 +78,7 @@ Meteor.startup(function () {
 			loadResults(ItemsCollection.find().count() + 30);
 		}
 	});
+	Meteor.subscribe('users');
 });
 
 var emphasizeField = function (field) {
@@ -110,7 +111,7 @@ var removeEditor = function () {
 Template.itemSummary.events({
 	'click': function (e) {
 		e.stopPropagation();
-		if (App.auth.isAdmin()) {
+		if (App.auth.canEdit()) {
 			Session.set('item.editId', this._id);
 			$('body').off('click', removeEditor).on('click', removeEditor);
 		}
