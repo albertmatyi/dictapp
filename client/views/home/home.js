@@ -59,9 +59,9 @@ Template.searchResults.helpers({
 	}
 });
 
-var loadResults = function (limit) {
+var loadResults = function () {
 	var searchString = Session.get('search.string');
-	limit = limit || 30;
+	var limit = Session.get('results.limit') || 30;
 	Meteor.subscribe('items', searchString, limit, function () {
 		$('body').removeClass('page-loading');
 	});
@@ -70,12 +70,10 @@ var loadResults = function (limit) {
 
 
 Meteor.startup(function () {
-	Deps.autorun(function () {
-		loadResults(30);
-	});
+	Deps.autorun(loadResults);
 	$(window).scroll(function() {
 		if($(window).scrollTop() === $(document).height() - $(window).height()) {
-			loadResults(ItemsCollection.find().count() + 30);
+			Session.set('results.limit', ItemsCollection.find().count() + 30);
 		}
 	});
 	Meteor.subscribe('users');
@@ -100,19 +98,27 @@ Template.itemSummary.helpers({
 	title: emphasizeField('title'),
 	description: emphasizeField('description'),
 	editItem: function () {
-		return Session.get('item.editId') === this._id;
+		return Session.get('item.edit.id') === this._id;
 	}
 });
 
 var removeEditor = function () {
-	Session.set('item.editId', undefined);
+	Session.set('item.edit.id', undefined);
+	Session.set('item.edit.height', undefined);
+};
+
+Template.itemSummary.rendered = function () {
+	$(this.firstNode).find('.description').css({
+		height: Session.get('item.edit.height') + 'px'
+	});
 };
 
 Template.itemSummary.events({
-	'click': function (e) {
+	'click .result': function (e) {
 		e.stopPropagation();
 		if (App.auth.canEdit()) {
-			Session.set('item.editId', this._id);
+			Session.set('item.edit.id', this._id);
+			Session.set('item.edit.height', $(e.currentTarget).find('.description').height());
 			$('body').off('click', removeEditor).on('click', removeEditor);
 		}
 	}
@@ -125,10 +131,10 @@ Template.itemSummary.events({
 		ItemsCollection.remove(this._id);
 	},
 	'click .save.btn': function (e) {
+		e.stopPropagation();
 		var $row = $(e.currentTarget).parents('.row');
 		var title = $row.find('.title').val();
 		var description = $row.find('.description').val();
-		Session.set('item.editId');
 		ItemsCollection.update(this._id, {$set: {title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title)}});
 		removeEditor();
 	}
