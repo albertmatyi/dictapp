@@ -53,8 +53,8 @@
 	{{> itemNew }}
 	{{/if}}
 	<div class="row result header hidden-xs">
-		<div class="col-sm-4 title">Word</div>
-		<div class="col-sm-8 description">Description</div>
+		<div class="col-sm-5 title">Word</div>
+		<div class="col-sm-7 description">Description</div>
 	</div>
 	{{#each results}}
 	{{> itemSummary}}
@@ -68,9 +68,9 @@
 <template name="itemSummary">
 	<div class="row result {{#if editItem}} editing {{/if}}">
 		{{#unless editItem}}
-		<div class="col-sm-4 col-sm-offset-0 col-xs-offset-1 col-xs-10 title">{{#markdown}}{{title}}{{/markdown}}</div>
+		<div class="col-sm-5 col-sm-offset-0 col-xs-offset-1 col-xs-10 title">{{#markdown}}{{title}}{{/markdown}}</div>
 		<hr class="visible-xs separator col-xs-12">
-		<div class="col-sm-8 col-sm-offset-0 col-xs-offset-1 col-xs-10 description">{{#markdown}}{{{description}}}{{/markdown}}
+		<div class="col-sm-7 col-sm-offset-0 col-xs-offset-1 col-xs-10 description">{{#markdown}}{{{description}}}{{/markdown}}
 		</div>
 		{{else}}
 		{{> itemEditor}}
@@ -79,8 +79,8 @@
 </template>
 
 <template name="itemEditor">
-	<input type="text" name="title" placeholder="Title" class="title col-sm-4 col-sm-offset-0 col-xs-offset-1 col-xs-10" value="{{title}}" />
-	<textarea name="description" placeholder="Description" class="description col-sm-7 col-sm-offset-0 col-xs-offset-1 col-xs-8">{{description}}</textarea>
+	<textarea name="title" placeholder="Title" class="title col-sm-5 col-sm-offset-0 col-xs-offset-1 col-xs-10">{{title}}</textarea>
+	<textarea name="description" placeholder="Description" class="description col-sm-6 col-sm-offset-0 col-xs-offset-1 col-xs-8">{{description}}</textarea>
 	<div class="col-xs-2 col-sm-1 controls">
 		<button class="save btn btn-primary">
 			<span class="fa fa-save fa-2x"></span>

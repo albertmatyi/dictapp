@@ -111,6 +111,9 @@ Template.itemSummary.rendered = function () {
 	$(this.firstNode).find('.description').css({
 		height: Session.get('item.edit.height') + 'px'
 	});
+	$(this.firstNode).find('.title').css({
+		height: Session.get('item.edit.height') + 'px'
+	});
 };
 
 Template.itemSummary.events({
@@ -135,7 +138,7 @@ Template.itemSummary.events({
 		var $row = $(e.currentTarget).parents('.row');
 		var title = $row.find('.title').val();
 		var description = $row.find('.description').val();
-		ItemsCollection.update(this._id, {$set: {title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title)}});
+		ItemsCollection.update(this._id, {$set: {title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title).toLowerCase()}});
 		removeEditor();
 	}
 });
@@ -161,7 +164,7 @@ Template.itemNew.events({
 		var $row = $(e.currentTarget).parents('.row');
 		var title = $row.find('.title').val();
 		var description = $row.find('.description').val();
-		ItemsCollection.insert({title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title)});
+		ItemsCollection.insert({title: title, description: description, searchable: App.string.replaceSpecialChars(description + ' ' + title).toLowerCase()});
 		clearRow($row);
 	}
 });

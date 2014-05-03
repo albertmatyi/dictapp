@@ -65,7 +65,7 @@ var importData1 = function () {
 	var file = process.env.PWD + '/.assets/1.data';
 	console.log('Importing...');
 	readFileByLine(file, regexExtractor(/title: '([^']+)'\s*,\s*description:\s*'([^']*)'/i, function (m) {
-		return {title: m[1], description: m[2], searchable: App.string.replaceSpecialChars(m[1] + ' ' + m[2])};
+		return {title: m[1], description: m[2], searchable: App.string.replaceSpecialChars(m[1] + ' ' + m[2]).toLowerCase()};
 	}));
 	console.log('Imported...');
 	return true;

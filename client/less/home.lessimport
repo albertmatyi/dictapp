@@ -117,6 +117,9 @@
 				color: #fff;
 				text-align: center;
 			}
+			.title, .description {
+				text-align: justify;
+			}
 		}
 	}
 }
